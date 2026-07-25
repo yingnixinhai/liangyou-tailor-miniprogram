@@ -3,14 +3,16 @@
   <!-- 用户头部 -->
   <view class="profile-header">
     <view class="avatar-wrap">
-      <image
+<open-data type="userAvatarUrl" class="avatar"></open-data>
+<image wx:if="{{false}}"
         class="avatar"
         src="{{avatarSrc || '../../images/avatar.png'}}"
         mode="aspectFill"
       />
     </view>
     <view class="user-meta">
-      <text class="user-name">{{displayName}}</text>
+      <open-data type="userNickName" class="user-name"></open-data>
+      <text wx:if="{{false}}" class="user-name">{{displayName}}</text>
       <text class="user-role" wx:if="{{isAdmin}}">商家管理员</text>
       <text class="user-role user-role-customer" wx:else bindlongpress="onInitAdmin">顾客</text>
     </view>
@@ -22,13 +24,15 @@
     <view class="account-item">
       <text class="account-label">头像</text>
       <view class="account-right">
-        <image class="account-avatar" src="{{avatarSrc || '../../images/avatar.png'}}" mode="aspectFill" />
+        <open-data type="userAvatarUrl" class="account-avatar"></open-data>
+        <image wx:if="{{false}}" class="account-avatar" src="{{avatarSrc || '../../images/avatar.png'}}" mode="aspectFill" />
       </view>
     </view>
     <view class="account-item">
       <text class="account-label">昵称</text>
       <view class="account-right">
-        <text class="account-value">{{displayName}}</text>
+        <open-data type="userNickName" class="account-value"></open-data>
+        <text wx:if="{{false}}" class="account-value">{{displayName}}</text>
       </view>
     </view>
     <view class="account-item">

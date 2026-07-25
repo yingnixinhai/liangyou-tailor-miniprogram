@@ -22,8 +22,11 @@ Page({
   },
 
   onShow: function () {
-    this.loadUserInfo();
-    this.loadStatus();
+    var that = this;
+    app.waitForReady(function() {
+      that.loadUserInfo();
+      that.loadStatus();
+    });
   },
 
   loadUserInfo: function () {

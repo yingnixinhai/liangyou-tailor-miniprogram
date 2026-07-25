@@ -1,6 +1,6 @@
 // API 请求封装 - 替代 wx.cloud.callFunction
 // 部署后替换为你的服务器域名（需 HTTPS）
-let BASE_URL = '域名';
+let BASE_URL = 'https://legend.nm.cn/miniprogram';
 
 let _token = '';
 let _openid = '';
@@ -70,6 +70,7 @@ module.exports = {
   login: login,
   logout: logout,
   setBaseUrl: setBaseUrl,
+  BASE_URL: BASE_URL,
   get token() { return _token; },
   get openid() { return _openid; }
 };

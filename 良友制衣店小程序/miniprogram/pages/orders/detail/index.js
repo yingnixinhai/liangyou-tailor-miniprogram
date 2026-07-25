@@ -11,7 +11,10 @@ Page({
 
   onLoad: function (options) {
     this.setData({ isAdmin: app.globalData.isAdmin, theme: app.globalData.theme, pageClass: app.globalData.theme === "night" ? "night-mode" : "" });
-    if (options.id) this.loadOrder(options.id);
+    if (options.id) {
+      var that = this;
+      app.waitForReady(function() { that.loadOrder(options.id); });
+    }
   },
 
   loadOrder: function (orderId) {

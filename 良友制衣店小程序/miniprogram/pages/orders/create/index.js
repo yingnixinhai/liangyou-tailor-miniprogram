@@ -22,7 +22,8 @@ Page({
     if (options.id) {
       wx.setNavigationBarTitle({ title: "编辑订单" });
       this.setData({ isEdit: true, orderId: options.id });
-      this.loadOrder(options.id);
+      var that = this;
+      app.waitForReady(function() { that.loadOrder(options.id); });
     }
   },
 
@@ -50,25 +51,39 @@ Page({
 
   onChooseImage: function () {
     const that = this;
+    const api = require("../../utils/api");
     wx.chooseImage({
       count: 1,
       sizeType: ["compressed"],
       sourceType: ["album", "camera"],
       success: function (res) {
-        wx.showLoading({ title: "处理中..." });
+        wx.showLoading({ title: "上传中..." });
         const filePath = res.tempFilePaths[0];
-        // 直接存临时路径（真实部署需替换为上传到对象存储）
-        wx.getFileSystemManager().readFile({
+        wx.uploadFile({
+          url: api.BASE_URL + '/upload',
           filePath: filePath,
-          encoding: "base64",
-          success: function (fsRes) {
-            const fileIDs = that.data.imageFileIDs.concat(["base64:" + fsRes.data.slice(0, 100)]);
-            that.setData({ imageFileIDs: fileIDs });
-            wx.hideLoading();
+          name: 'file',
+          success: function (upRes) {
+            try {
+              const data = JSON.parse(upRes.data);
+              if (data.success) {
+                // 存完整 URL（api.BASE_URL 是前缀，data.url 是路径）
+                const fullUrl = api.BASE_URL.replace(/\/miniprogram$/, '') + data.url;
+                const fileIDs = that.data.imageFileIDs.concat([fullUrl]);
+                that.setData({ imageFileIDs: fileIDs });
+                wx.hideLoading();
+              } else {
+                wx.hideLoading();
+                wx.showToast({ title: data.errMsg || "上传失败", icon: "none" });
+              }
+            } catch (e) {
+              wx.hideLoading();
+              wx.showToast({ title: "上传失败", icon: "none" });
+            }
           },
           fail: function () {
             wx.hideLoading();
-            wx.showToast({ title: "读取图片失败", icon: "none" });
+            wx.showToast({ title: "上传失败", icon: "none" });
           }
         });
       }

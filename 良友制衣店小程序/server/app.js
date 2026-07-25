@@ -1,4 +1,26 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Configure multer for image uploads
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname) || '.jpg';
+    const name = Date.now() + '-' + Math.random().toString(36).slice(2, 8) + ext;
+    cb(null, name);
+  }
+});
+
+const upload = multer({ storage: storage });
 const mysql = require('mysql2/promise');
 const crypto = require('crypto');
 const https = require('https');
@@ -92,6 +114,16 @@ async function isAdmin(openid) {
 // ===== 启动Express =====
 const app = express();
 app.use(express.json({ limit: '10mb' }));
+app.use('/uploads', express.static(uploadDir));
+
+// ===== 图片上传
+app.post('/upload', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.json({ success: false, errMsg: '没有上传文件' });
+  }
+  const url = '/uploads/' + req.file.filename;
+  return res.json({ success: true, url: url, filename: req.file.filename });
+});
 
 // ===== 登录 =====
 app.post('/login', async (req, res) => {

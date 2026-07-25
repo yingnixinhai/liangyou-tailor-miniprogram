@@ -8,7 +8,8 @@ App({
       isAdmin: false,
       userInfo: null,
       theme: "day",
-      token: ""
+      token: "",
+      ready: false
     };
 
     // 静默登录
@@ -21,8 +22,10 @@ App({
       that.globalData.openid = res.openid;
       that.globalData.isAdmin = res.isAdmin;
       that.globalData.token = api.token;
+      that.globalData.ready = true;
       return res;
     }).catch(err => {
+      that.globalData.ready = true;
       console.error("登录失败", err);
       wx.showModal({
         title: "登录失败",
@@ -35,6 +38,14 @@ App({
 
   getThemeManager: function () {
     return themeMgr;
+  },
+
+  waitForReady: function(callback) {
+    if (this.globalData.ready) {
+      callback();
+    } else {
+      setTimeout(() => this.waitForReady(callback), 100);
+    }
   },
 
   refreshTheme: function () {

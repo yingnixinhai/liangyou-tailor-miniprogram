@@ -18,7 +18,8 @@ Page({
   },
 
   onShow: function () {
-    this.loadOrders(true);
+    var that = this;
+    app.waitForReady(function() { that.loadOrders(true); });
   },
 
   loadOrders: function (reset = false) {

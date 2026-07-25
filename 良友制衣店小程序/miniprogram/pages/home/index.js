@@ -18,7 +18,8 @@ Page({
   },
 
   onShow: function () {
-    this.loadStatus();
+    var that = this;
+    app.waitForReady(function() { that.loadStatus(); });
   },
 
   loadStatus: function () {
