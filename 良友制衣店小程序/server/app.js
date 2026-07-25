@@ -156,6 +156,10 @@ app.post('/order', async (req, res) => {
       case 'update': return res.json(await updateOrder(req.body, openid, admin));
       case 'delete': return res.json(await deleteOrder(req.body, openid, admin));
       case 'updateStatus': return res.json(await updateOrderStatus(req.body, openid, admin));
+      case 'batchDelete': return res.json(await batchDeleteOrders(req.body, openid, admin));
+      case 'batchUpdateStatus': return res.json(await batchUpdateOrdersStatus(req.body, openid, admin));
+      case 'batchAllDelete': return res.json(await batchAllDeleteOrders(req.body, openid, admin));
+      case 'batchAllUpdateStatus': return res.json(await batchAllUpdateOrdersStatus(req.body, openid, admin));
       default: return res.json({ success: false, errMsg: '未知操作' });
     }
   } catch (e) {
@@ -274,6 +278,75 @@ async function updateOrderStatus(body, openid, admin) {
       await conn.query('UPDATE orders SET status = ?, completion_time = NULL, last_updated_at = ? WHERE id = ?', [newStatus, now(), orderId]);
     }
     return { success: true };
+  } finally { conn.release(); }
+}
+
+// ===== 批量操作 =====
+async function batchDeleteOrders(body, openid, admin) {
+  if (!admin) return { success: false, errMsg: '仅商家可操作' };
+  const { orderIds } = body;
+  if (!orderIds || !Array.isArray(orderIds) || orderIds.length === 0)
+    return { success: false, errMsg: '参数不完整' };
+  const conn = await (await getPool()).getConnection();
+  try {
+    const placeholders = orderIds.map(function() { return '?'; });
+    await conn.query('DELETE FROM orders WHERE id IN (' + placeholders.join(',') + ')', orderIds);
+    return { success: true, deletedCount: orderIds.length };
+  } finally { conn.release(); }
+}
+
+async function batchUpdateOrdersStatus(body, openid, admin) {
+  if (!admin) return { success: false, errMsg: '仅商家可操作' };
+  const { orderIds, newStatus } = body;
+  if (!orderIds || !Array.isArray(orderIds) || orderIds.length === 0 || !newStatus)
+    return { success: false, errMsg: '参数不完整' };
+  if (!['unpaid', 'incomplete', 'completed'].includes(newStatus))
+    return { success: false, errMsg: '无效的状态' };
+  const conn = await (await getPool()).getConnection();
+  try {
+    const placeholders = orderIds.map(function() { return '?'; });
+    if (newStatus === 'completed') {
+      await conn.query('UPDATE orders SET status = ?, completion_time = ?, last_updated_at = ? WHERE id IN (' + placeholders.join(',') + ')',
+        [newStatus, now(), now()].concat(orderIds));
+    } else {
+      await conn.query('UPDATE orders SET status = ?, completion_time = NULL, last_updated_at = ? WHERE id IN (' + placeholders.join(',') + ')',
+        [newStatus, now()].concat(orderIds));
+    }
+    return { success: true, updatedCount: orderIds.length };
+  } finally { conn.release(); }
+}
+
+async function batchAllDeleteOrders(body, openid, admin) {
+  if (!admin) return { success: false, errMsg: '仅商家可操作' };
+  const { status } = body;
+  const conn = await (await getPool()).getConnection();
+  try {
+    var result;
+    if (status && ['unpaid', 'incomplete', 'completed'].includes(status)) {
+      result = await conn.query('DELETE FROM orders WHERE status = ?', [status]);
+    } else {
+      result = await conn.query('DELETE FROM orders');
+    }
+    return { success: true, deletedCount: result[0].affectedRows };
+  } finally { conn.release(); }
+}
+
+async function batchAllUpdateOrdersStatus(body, openid, admin) {
+  if (!admin) return { success: false, errMsg: '仅商家可操作' };
+  const { status, newStatus } = body;
+  if (!status || !newStatus) return { success: false, errMsg: '参数不完整' };
+  if (!['unpaid', 'incomplete', 'completed'].includes(status) || !['unpaid', 'incomplete', 'completed'].includes(newStatus))
+    return { success: false, errMsg: '无效的状态' };
+  const conn = await (await getPool()).getConnection();
+  try {
+    if (newStatus === 'completed') {
+      var result = await conn.query('UPDATE orders SET status = ?, completion_time = ?, last_updated_at = ? WHERE status = ?',
+        [newStatus, now(), now(), status]);
+    } else {
+      var result = await conn.query('UPDATE orders SET status = ?, completion_time = NULL, last_updated_at = ? WHERE status = ?',
+        [newStatus, now(), status]);
+    }
+    return { success: true, updatedCount: result[0].affectedRows };
   } finally { conn.release(); }
 }
 

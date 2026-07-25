@@ -4,11 +4,9 @@
   <view class="profile-header">
     <view class="avatar-wrap">
 <open-data type="userAvatarUrl" class="avatar"></open-data>
-<image wx:if="{{false}}"
-        class="avatar"
-        src="{{avatarSrc || '../../images/avatar.png'}}"
-        mode="aspectFill"
-      />
+<image wx:if="{{false}}" class="avatar"
+       src="{{avatarSrc || '../../images/avatar.png'}}"
+       mode="aspectFill" />
     </view>
     <view class="user-meta">
       <open-data type="userNickName" class="user-name"></open-data>

@@ -5,11 +5,19 @@ Component({
       type: Object,
       value: {}
     },
-    theme: {
-      type: String,
-      value: "day"
-    }
-  },
+   theme: {
+     type: String,
+     value: "day"
+   },
+   selectable: {
+     type: Boolean,
+     value: false
+   },
+   checked: {
+     type: Boolean,
+     value: false
+   }
+ },
 
   data: {
     displayTime: "",
@@ -78,7 +86,11 @@ Component({
     },
 
     onCardTap: function () {
-      this.triggerEvent("cardtap", { orderId: this.data.order._id });
+      this.triggerEvent("cardtap", { orderId: this.data.order._id, selectable: this.data.selectable, checked: !this.data.checked });
+    },
+
+    onCardLongPress: function () {
+      this.triggerEvent("longpress", { orderId: this.data.order._id });
     }
   }
 });

@@ -117,3 +117,30 @@
   background-color: #1B5E20;
   color: #81C784;
 }
+
+
+/* ===== 多选框 ===== */
+.checkbox-overlay {
+  position: absolute; top: 0; left: 0;
+  width: 80rpx; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.checkbox-overlay.visible {
+  opacity: 1; pointer-events: auto;
+}
+.checkbox {
+  width: 36rpx; height: 36rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--border-color, #ccc);
+  display: flex; align-items: center; justify-content: center;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+.checkbox.checked {
+  background-color: #1565C0; border-color: #1565C0;
+}
+.checkmark {
+  color: #fff; font-size: 22rpx; font-weight: 700;
+}

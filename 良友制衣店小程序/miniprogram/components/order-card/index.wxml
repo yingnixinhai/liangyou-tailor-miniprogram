@@ -1,4 +1,10 @@
-<view class="order-card {{pageClass}}" bindtap="onCardTap">
+<view class="order-card {{pageClass}}" bindtap="onCardTap" bindlongpress="onCardLongPress">
+  <!-- 多选框 -->
+  <view class="checkbox-overlay {{selectable ? 'visible' : ''}}" catchtap="onCardTap">
+    <view class="checkbox {{checked ? 'checked' : ''}}">
+      <text wx:if="{{checked}}" class="checkmark">✓</text>
+    </view>
+  </view>
   <!-- 左侧图片 -->
   <view class="card-image-wrap">
     <image

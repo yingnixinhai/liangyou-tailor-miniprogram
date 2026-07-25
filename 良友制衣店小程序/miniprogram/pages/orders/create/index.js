@@ -39,7 +39,7 @@ Page({
       customerName: order.customerName || "",
       customerPhone: order.customerPhone || "",
       expectedCompletionTime: order.expectedCompletionTime || "",
-      orderAmount: order.orderAmount !== undefined ? order.orderAmount.toString() : "",
+      orderAmount: order.orderAmount != null ? order.orderAmount.toString() : "",
     });
   },
  loadOrder: function (orderId) {
@@ -76,8 +76,8 @@ Page({
       success: function (res) {
         wx.showLoading({ title: "上传中..." });
         const filePath = res.tempFilePaths[0];
-        wx.uploadFile({
-          url: api.BASE_URL + '/upload',
+   wx.uploadFile({
+          url: api.BASE_URL + '/upload', timeout: 30000,
           filePath: filePath,
           name: 'file',
           success: function (upRes) {
@@ -97,10 +97,14 @@ Page({
               wx.hideLoading();
               wx.showToast({ title: "上传失败", icon: "none" });
             }
-          },
-          fail: function () {
+         },
+          fail: function (e) {
             wx.hideLoading();
             wx.showToast({ title: "上传失败", icon: "none" });
+            console.error("uploadFile failed:", e);
+          },
+          complete: function () {
+            wx.hideLoading();
           }
         });
       }

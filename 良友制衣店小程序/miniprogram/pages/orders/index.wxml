@@ -23,7 +23,10 @@
       <order-card
         order="{{item}}"
         theme="{{theme}}"
+        selectable="{{batchMode}}"
+        checked="{{selectedIds.indexOf(item._id) > -1}}"
         bind:cardtap="onOrderTap"
+        bind:longpress="onOrderLongPress"
       />
     </block>
 
@@ -32,8 +35,21 @@
     </view>
   </scroll-view>
 
+  <!-- 批量操作面板 -->
+  <view wx:if="{{batchMode}}" class="batch-panel safe-area-bottom">
+    <view class="batch-header">
+      <text class="batch-count">已选 {{selectedIds.length}} 项</text>
+      <text class="batch-cancel" bindtap="onExitBatchMode">取消</text>
+    </view>
+    <view class="batch-actions-row">
+      <button class="batch-btn select-all" bindtap="onSelectAll">{{selectAllLabel}}</button>
+      <button class="batch-btn action" bindtap="onBatchUpdateStatus">{{batchActionLabel}}</button>
+      <button class="batch-btn danger" bindtap="onBatchDelete">批量删除</button>
+    </view>
+  </view>
+
   <!-- 新建按钮 -->
-  <view class="fab-wrap">
+  <view wx:if="{{!batchMode}}" class="fab-wrap">
     <view class="fab-btn" bindtap="onCreateOrder">
       <text class="fab-icon">+</text>
     </view>

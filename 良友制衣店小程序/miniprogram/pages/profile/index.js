@@ -21,24 +21,12 @@ Page({
     this.computePreviews();
   },
 
-  onShow: function () {
-    var that = this;
-    app.waitForReady(function() {
-      that.loadUserInfo();
+ onShow: function () {
+   var that = this;
+   app.waitForReady(function() {
       that.loadStatus();
     });
   },
-
-  loadUserInfo: function () {
-    const that = this;
-    wx.getUserProfile({
-      desc: "用于显示用户信息",
-      success: function (res) {
-        that.setData({ displayName: res.userInfo.nickName, avatarSrc: res.userInfo.avatarUrl });
-      }
-    });
-  },
-
   loadStatus: function () {
     api.request("/status", { action: "get" }).then(res => {
       if (res) {
