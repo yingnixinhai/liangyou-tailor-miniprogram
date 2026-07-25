@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -25,8 +25,6 @@ const mysql = require('mysql2/promise');
 const crypto = require('crypto');
 const https = require('https');
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
 
 // ===== 加载环境变量 =====
 try {
