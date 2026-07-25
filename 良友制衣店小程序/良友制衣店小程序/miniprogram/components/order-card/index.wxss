@@ -1,0 +1,149 @@
+
+.order-card {
+  display: flex;
+  align-items: center;
+  background-color: var(--card-bg);
+  border-radius: 16rpx;
+  margin: 16rpx 30rpx;
+  padding: 24rpx;
+  position: relative;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2rpx 8rpx var(--shadow-color);
+}
+
+.order-card:active {
+  opacity: 0.8;
+}
+
+.card-image-wrap {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--border-color);
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+}
+
+.card-content {
+  flex: 1;
+  margin-left: 20rpx;
+  min-width: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.card-user {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.card-desc {
+  margin-bottom: 10rpx;
+}
+
+.card-desc-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+}
+
+.card-time-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-right: 6rpx;
+}
+
+.card-time {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.card-badge {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.card-badge.unpaid {
+  background-color: #FFF3E0;
+  color: #E65100;
+}
+
+.card-badge.incomplete {
+  background-color: #E3F2FD;
+  color: #1565C0;
+}
+
+.card-badge.completed {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+}
+
+/* 暗夜模式小徽章 */
+.night-mode .card-badge.unpaid {
+  background-color: #3E2723;
+  color: #FFB74D;
+}
+
+.night-mode .card-badge.incomplete {
+  background-color: #1A237E;
+  color: #90CAF9;
+}
+
+.night-mode .card-badge.completed {
+  background-color: #1B5E20;
+  color: #81C784;
+}
+
+
+/* ===== 多选框 ===== */
+.checkbox-overlay {
+  position: absolute; top: 0; left: 0;
+  width: 80rpx; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.checkbox-overlay.visible {
+  opacity: 1; pointer-events: auto;
+}
+.checkbox {
+  width: 36rpx; height: 36rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--border-color, #ccc);
+  display: flex; align-items: center; justify-content: center;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+.checkbox.checked {
+  background-color: #1565C0; border-color: #1565C0;
+}
+.checkmark {
+  color: #fff; font-size: 22rpx; font-weight: 700;
+}
+.order-card {
+  position: relative;
+}

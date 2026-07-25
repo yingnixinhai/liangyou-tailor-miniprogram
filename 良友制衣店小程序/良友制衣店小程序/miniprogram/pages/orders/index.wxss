@@ -1,0 +1,125 @@
+
+.orders-page { display: flex; flex-direction: column;
+  height: 100vh; overflow: hidden; box-sizing: border-box;
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease;
+  padding-bottom: 120rpx;
+}
+
+.order-list {
+  flex: 1; height: 0;
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: var(--text-secondary);
+}
+
+.loading-state {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.fab-wrap {
+  position: fixed;
+  right: 40rpx;
+  bottom: 140rpx;
+  z-index: 50;
+}
+
+.fab-btn {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.fab-btn:active {
+  transform: scale(0.92);
+}
+
+.fab-icon { font-size: 48rpx; font-weight: 300; line-height: 1; }
+
+/* ===== 管理员操作栏 ===== */
+.admin-actions {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16rpx 30rpx;
+  gap: 16rpx;
+}
+.one-click-row { display: flex; gap: 12rpx; flex: 1; }
+.one-click-btn {
+  display: flex; align-items: center; justify-content: center;
+  height: 56rpx; line-height: 56rpx;
+  font-size: 24rpx; font-weight: 500;
+  border-radius: 8rpx;
+  background-color: var(--button-bg); color: var(--button-text);
+  border: none; padding: 0 20rpx; flex: 1;
+}
+.one-click-btn.danger { background-color: #E53935; color: #fff; }
+.batch-toggle-btn {
+  display: flex; align-items: center; justify-content: center;
+  height: 56rpx; line-height: 56rpx;
+  font-size: 24rpx; font-weight: 500;
+  border-radius: 8rpx;
+  background-color: #1565C0; color: #fff;
+  border: none; padding: 0 20rpx; white-space: nowrap;
+}
+
+/* ===== 批量模式栏 ===== */
+.batch-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16rpx 30rpx;
+}
+.batch-cancel-btn, .batch-select-btn {
+  display: flex; align-items: center; justify-content: center;
+  height: 56rpx; line-height: 56rpx;
+  font-size: 24rpx; font-weight: 500;
+  border-radius: 8rpx; border: none; padding: 0 20rpx;
+}
+.batch-cancel-btn { background-color: var(--card-bg); color: var(--text-color); }
+.batch-select-btn { background-color: #1565C0; color: #fff; }
+.batch-count { font-size: 26rpx; color: var(--text-secondary); }
+
+/* ===== 批量操作按钮（底部） ===== */
+.batch-actions {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  display: flex; gap: 16rpx;
+  padding: 20rpx 30rpx 40rpx;
+  background-color: var(--bg-color);
+  border-top: 1rpx solid var(--border-color);
+  z-index: 50;
+}
+.batch-action-btn {
+  display: flex; align-items: center; justify-content: center;
+  flex: 1; height: 80rpx; line-height: 80rpx;
+  font-size: 28rpx; font-weight: 600;
+  border-radius: 12rpx; border: none;
+  background-color: var(--button-bg); color: var(--button-text);
+}
+.batch-action-btn.danger { background-color: #E53935; color: #fff; }
+
+/* ===== 暗夜模式适配 ===== */
+.night-mode .one-click-btn { background-color: #333; color: #eee; }
+.night-mode .batch-cancel-btn { background-color: #333; color: #eee; }
+.night-mode .batch-actions { background-color: #1A1A1A; border-top-color: #333; }
+.night-mode .batch-action-btn { background-color: #333; color: #eee; }
+.night-mode .batch-action-btn.danger { background-color: #B71C1C; }
+.night-mode .one-click-btn.danger { background-color: #B71C1C; }

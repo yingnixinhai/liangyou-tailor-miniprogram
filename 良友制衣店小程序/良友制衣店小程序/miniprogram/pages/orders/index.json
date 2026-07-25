@@ -1,0 +1,7 @@
+
+{
+  "usingComponents": {
+    "order-card": "../../components/order-card/index",
+    "status-tabs": "../../components/status-tabs/index"
+  }
+}

@@ -1,0 +1,96 @@
+<view class="profile-page {{pageClass}}">
+
+  <!-- 用户头部 -->
+  <view class="profile-header">
+    <view class="avatar-wrap">
+<open-data type="userAvatarUrl" class="avatar"></open-data>
+<image wx:if="{{false}}" class="avatar"
+       src="{{avatarSrc || '../../images/avatar.png'}}"
+       mode="aspectFill" />
+    </view>
+    <view class="user-meta">
+      <open-data type="userNickName" class="user-name"></open-data>
+      <text wx:if="{{false}}" class="user-name">{{displayName}}</text>
+      <text class="user-role" wx:if="{{isAdmin}}">商家管理员</text>
+      <text class="user-role user-role-customer" wx:else bindlongpress="onInitAdmin">顾客</text>
+    </view>
+  </view>
+
+  <!-- 账户信息 -->
+  <view class="account-section">
+    <view class="section-title">账户信息</view>
+    <view class="account-item">
+      <text class="account-label">头像</text>
+      <view class="account-right">
+        <open-data type="userAvatarUrl" class="account-avatar"></open-data>
+        <image wx:if="{{false}}" class="account-avatar" src="{{avatarSrc || '../../images/avatar.png'}}" mode="aspectFill" />
+      </view>
+    </view>
+    <view class="account-item">
+      <text class="account-label">昵称</text>
+      <view class="account-right">
+        <open-data type="userNickName" class="account-value"></open-data>
+        <text wx:if="{{false}}" class="account-value">{{displayName}}</text>
+      </view>
+    </view>
+    <view class="account-item">
+      <text class="account-label">角色</text>
+      <view class="account-right">
+        <text class="account-value">{{isAdmin ? '商家管理员' : '顾客'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商家设置区 -->
+  <view class="settings-section" wx:if="{{isAdmin}}">
+    <view class="section-title">默认时间设置</view>
+    <view class="setting-item" bindtap="onEditInTime">
+      <text class="setting-label">默认上班时间</text>
+      <view class="setting-right">
+        <text class="setting-value">{{expectedInTime}}</text>
+        <text class="setting-arrow"> ></text>
+      </view>
+    </view>
+    <view class="setting-item" bindtap="onEditOutTime">
+      <text class="setting-label">默认下班时间</text>
+      <view class="setting-right">
+        <text class="setting-value">{{expectedOutTime}}</text>
+        <text class="setting-arrow"> ></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="about-section">
+    <view class="section-title">关于</view>
+    <view class="about-item">
+      <view class="about-left">
+        <text class="about-label">店铺名称</text>
+      </view>
+      <view class="about-right">
+        <text class="about-value">良友制衣店</text>
+      </view>
+    </view>
+    <view class="about-item" bindtap="onShowShopIntro">
+      <view class="about-left">
+        <text class="about-label">店铺介绍</text>
+      </view>
+      <view class="about-right">
+        <text class="detail-link">详情  ></text>
+      </view>
+    </view>
+    <view class="about-item" bindtap="onShowShopAddress">
+      <view class="about-left">
+        <text class="about-label">店铺地址</text>
+      </view>
+      <view class="about-right">
+        <text class="detail-link">详情  ></text>
+      </view>
+    </view>
+    <view class="about-item">
+      <text class="about-label">版本</text>
+      <text class="about-value">1.0.0</text>
+    </view>
+  </view>
+
+</view>

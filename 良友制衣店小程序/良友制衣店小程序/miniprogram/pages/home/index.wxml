@@ -1,0 +1,39 @@
+<view class="page-container {{pageClass}}">
+
+  <!-- 主体大字区域 -->
+  <view class="hero-area">
+    <view class="hero-text-wrapper {{heroShiftClass}}">
+      <!-- 第一行：[不] -->
+      <view class="hero-line">
+        <text class="hero-char-bu {{buClass}}">不</text>
+      </view>
+      <!-- 第二行：[在店] -->
+      <view class="hero-line">
+        <text class="hero-char-main">在</text>
+        <text class="hero-char-main">店</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 状态信息区域 -->
+  <view class="info-section">
+    <view class="info-row" bindtap="onEditExpectedTime">
+      <text class="info-label">{{expectedLabel}}</text>
+      <text class="info-value">{{isInStore ? expectedOutTime : expectedInTime}}</text>
+    </view>
+    <view class="info-row info-row-note" wx:if="{{isAdmin || statusNote}}" bindtap="onEditNote">
+      <text class="info-label">备注</text>
+      <text class="info-value info-value-note" wx:if="{{statusNote}}">{{statusNote}}</text>
+      <text class="info-placeholder" wx:else>点击添加备注</text>
+    </view>
+  </view>
+
+  <!-- 切换按钮（仅商家） -->
+  <view class="toggle-btn-section safe-area-bottom" wx:if="{{isAdmin}}">
+    <button class="toggle-btn"
+            bindtap="onToggleStatus">
+      {{toggleLabel}}
+    </button>
+  </view>
+
+</view>
