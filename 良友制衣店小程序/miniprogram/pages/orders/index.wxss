@@ -80,13 +80,13 @@
   border-radius: 10rpx; border: none;
   background-color: var(--button-bg); color: var(--button-text);
 }
-.batch-btn.action { background-color: #1565C0; color: #fff; }
-.batch-btn.danger { background-color: #E53935; color: #fff; }
-.batch-btn.select-all { background-color: var(--card-bg); color: var(--text-color); }
+
+
+.batch-btn { background-color: var(--card-bg); color: var(--text-color); }
 
 /* ===== 暗夜模式 ===== */
 .night-mode .batch-panel { background-color: #1A1A1A; border-top-color: #333; }
 .night-mode .batch-btn { background-color: #333; color: #eee; }
-.night-mode .batch-btn.action { background-color: #1565C0; color: #fff; }
-.night-mode .batch-btn.danger { background-color: #B71C1C; color: #fff; }
+.night-mode 
+
 .night-mode .batch-btn.select-all { background-color: #2A2A2A; color: #eee; }

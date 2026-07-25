@@ -13,9 +13,13 @@ Component({
      type: Boolean,
      value: false
    },
-   checked: {
-     type: Boolean,
-     value: false
+   allSelectedIds: {
+     type: Array,
+     value: function() { return []; }
+   },
+   orderId: {
+     type: String,
+     value: ""
    }
  },
 
@@ -28,10 +32,15 @@ Component({
     customerName: "",
     requirementText: "",
     statusClass: "",
-    pageClass: ""
+    pageClass: "",
+    isSelected: false
   },
 
   observers: {
+    'allSelectedIds': function (ids) {
+      var isSel = ids.indexOf(this.data.orderId) > -1;
+      this.setData({ isSelected: isSel });
+    },
     'order': function (order) {
       if (!order) return;
       let timeLabel = "";
@@ -86,7 +95,7 @@ Component({
     },
 
     onCardTap: function () {
-      this.triggerEvent("cardtap", { orderId: this.data.order._id, selectable: this.data.selectable, checked: !this.data.checked });
+      this.triggerEvent("cardtap", { orderId: this.data.order._id, selectable: this.data.selectable, checked: !this.data.isSelected });
     },
 
     onCardLongPress: function () {

@@ -24,7 +24,7 @@
         order="{{item}}"
         theme="{{theme}}"
         selectable="{{batchMode}}"
-        checked="{{selectedIds.indexOf(item._id) > -1}}"
+        allSelectedIds="{{selectedIds}}" orderId="{{item._id}}"
         bind:cardtap="onOrderTap"
         bind:longpress="onOrderLongPress"
       />

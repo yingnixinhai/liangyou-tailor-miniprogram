@@ -1,6 +1,8 @@
 const app = getApp();
 const api = require("../../utils/api");
 
+var _ignoreOrderId = null;
+
 Page({
   data: {
     activeTab: "incomplete",
@@ -14,8 +16,8 @@ Page({
     batchMode: false,
     selectedIds: [],
     batchActionLabel: "",
-    selectAllLabel: "全选"
-  },
+    selectAllLabel: "全选",
+   },
 
   onLoad: function () {
     this.setData({ isAdmin: app.globalData.isAdmin, theme: app.globalData.theme, pageClass: app.globalData.theme === "night" ? "night-mode" : "" });
@@ -54,8 +56,8 @@ Page({
   computeBatchLabels: function () {
     var tab = this.data.activeTab;
     var label = "";
-    if (tab === "unpaid") label = "批量已交付";
-    else if (tab === "incomplete") label = "批量已完成";
+    if (tab === "unpaid") label = "批量交付";
+    else if (tab === "incomplete") label = "批量完成";
     else label = "批量回退";
     this.setData({ batchActionLabel: label });
   },
@@ -65,41 +67,58 @@ Page({
     this.loadOrders(true);
   },
 
-  onOrderTap: function (e) {
-    if (this.data.batchMode) {
-      this.toggleSelection(e.detail.orderId);
-    } else {
-      wx.navigateTo({ url: "/pages/orders/detail/index?id=" + e.detail.orderId });
-    }
-  },
+ onOrderTap: function (e) {
+   console.log("onOrderTap batchMode:", this.data.batchMode, "orderId:", e.detail.orderId);
+   if (this.data.batchMode) {
+     if (_ignoreOrderId !== null) {
+       if (e.detail.orderId === _ignoreOrderId) {
+         _ignoreOrderId = null;
+         return;
+       }
+       _ignoreOrderId = null;
+     }
+     this.toggleSelection(e.detail.orderId);
+   } else {
+     wx.navigateTo({ url: "/pages/orders/detail/index?id=" + e.detail.orderId });
+   }
+ },
 
-  onOrderLongPress: function (e) {
-    if (!this.data.isAdmin) return;
-    this.setData({ batchMode: true, selectedIds: [e.detail.orderId], selectAllLabel: "全选" });
-  },
+ onOrderLongPress: function (e) {
+   if (!this.data.isAdmin) return;
+   if (!e.detail || !e.detail.orderId) {
+    console.log("ignoring native longpress (no orderId)");
+    return;
+  }
+   console.log("onOrderLongPress orderId:", e.detail.orderId);
+   var that = this;
+   _ignoreOrderId = e.detail.orderId;
+   this.setData({ batchMode: true, selectedIds: [e.detail.orderId], selectAllLabel: "全选" });
+ },
 
-  toggleSelection: function (orderId) {
-    var ids = this.data.selectedIds;
-    var idx = ids.indexOf(orderId);
-    if (idx > -1) {
-      ids.splice(idx, 1);
-    } else {
-      ids.push(orderId);
-    }
-    if (ids.length === 0) {
-      this.setData({ batchMode: false, selectedIds: [], selectAllLabel: "全选" });
-    } else {
-      var allLabel = ids.length === this.data.orders.length ? "取消全选" : "全选";
-      this.setData({ selectedIds: ids, selectAllLabel: allLabel });
-    }
-  },
+ toggleSelection: function (orderId) {
+   var ids = this.data.selectedIds;
+   console.log("toggleSelection orderId:", orderId, "selectedIds before:", JSON.stringify(ids));
+   var idx = ids.indexOf(orderId);
+   var newIds;
+   if (idx > -1) {
+     newIds = ids.slice(0, idx).concat(ids.slice(idx + 1));
+   } else {
+     newIds = ids.concat([orderId]);
+   }
+   console.log("toggleSelection newIds:", JSON.stringify(newIds));
+   if (newIds.length === 0) {
+     this.setData({ batchMode: false, selectedIds: [], selectAllLabel: "全选" });
+   } else {
+     this.setData({ selectedIds: newIds, selectAllLabel: newIds.length === this.data.orders.length ? "取消全选" : "全选" });
+   }
+ },
 
   onExitBatchMode: function () {
     this.setData({ batchMode: false, selectedIds: [], selectAllLabel: "全选" });
   },
 
   onSelectAll: function () {
-    var ids = this.data.selectedIds;
+    var ids = this.data.selectedIds.slice();
     if (ids.length === this.data.orders.length) {
       this.setData({ selectedIds: [], selectAllLabel: "全选" });
     } else {
@@ -110,7 +129,7 @@ Page({
 
   onBatchDelete: function () {
     var that = this;
-    var ids = this.data.selectedIds;
+    var ids = this.data.selectedIds.slice();
     if (ids.length === 0) { wx.showToast({ title: "请选择订单", icon: "none" }); return; }
     wx.showModal({
       title: "确认删除",
@@ -133,7 +152,7 @@ Page({
 
   onBatchUpdateStatus: function () {
     var that = this;
-    var ids = this.data.selectedIds;
+    var ids = this.data.selectedIds.slice();
     if (ids.length === 0) { wx.showToast({ title: "请选择订单", icon: "none" }); return; }
     var statusMap = { unpaid: "incomplete", incomplete: "completed", completed: "incomplete" };
     var newStatus = statusMap[this.data.activeTab];

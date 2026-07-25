@@ -77,6 +77,11 @@
   color: var(--text-secondary);
 }
 
+.selected-card {
+  border: 3rpx solid #1565C0 !important;
+  box-shadow: 0 0 12rpx rgba(21, 101, 192, 0.25);
+}
+
 .card-badge {
   position: absolute;
   top: 16rpx;
@@ -123,24 +128,11 @@
 .checkbox-overlay {
   position: absolute; top: 0; left: 0;
   width: 80rpx; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 10; opacity: 0; pointer-events: none;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 16rpx; z-index: 10; opacity: 0; pointer-events: none;
   transition: opacity 0.2s ease;
 }
 .checkbox-overlay.visible {
   opacity: 1; pointer-events: auto;
 }
-.checkbox {
-  width: 36rpx; height: 36rpx;
-  border-radius: 50%;
-  border: 2rpx solid var(--border-color, #ccc);
-  display: flex; align-items: center; justify-content: center;
-  background-color: #fff;
-  transition: all 0.2s ease;
-}
-.checkbox.checked {
-  background-color: #1565C0; border-color: #1565C0;
-}
-.checkmark {
-  color: #fff; font-size: 22rpx; font-weight: 700;
-}
+.checkbox-icon { width: 36rpx; height: 36rpx; }

@@ -1,9 +1,8 @@
-<view class="order-card {{pageClass}}" bindtap="onCardTap" bindlongpress="onCardLongPress">
+<view class="order-card {{pageClass}} {{isSelected ? 'selected-card' : ''}}" bindtap="onCardTap" bindlongpress="onCardLongPress">
   <!-- 多选框 -->
-  <view class="checkbox-overlay {{selectable ? 'visible' : ''}}" catchtap="onCardTap">
-    <view class="checkbox {{checked ? 'checked' : ''}}">
-      <text wx:if="{{checked}}" class="checkmark">✓</text>
-    </view>
+  <view class="checkbox-overlay {{selectable ? 'visible' : ''}}">
+    <image wx:if="{{isSelected}}" class="checkbox-icon" src="../../images/icons/selected.png" mode="aspectFit" />
+    <image wx:else class="checkbox-icon" src="../../images/icons/select.png" mode="aspectFit" />
   </view>
   <!-- 左侧图片 -->
   <view class="card-image-wrap">
