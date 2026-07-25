@@ -7,8 +7,8 @@ Page({
     displayName: "", avatarSrc: "",
     expectedInTime: "09:00", expectedOutTime: "19:00",
     introPreview: "", addressPreview: "",
-    shopIntro: "良友制衣店，专注定制服装，提供个性化裁缝服务。",
-    shopAddress: "请填写店铺地址"
+    shopIntro: "良友制衣店 —— 三十余载匠心传承，专注衣物修补、窗帘定制与羽绒服定制。一针一线，皆是对品质的坚守；一朝一夕，只为不负您的信赖。",
+    shopAddress: "聊城市东昌府区柳园街道龙山西街运河人家四号楼良友制衣店"
   },
 
   onLoad: function () {

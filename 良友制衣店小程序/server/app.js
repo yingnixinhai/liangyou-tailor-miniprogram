@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -295,7 +295,7 @@ app.post('/status', async (req, res) => {
         const sets = []; const params = [];
         if (req.body.isInStore !== undefined) { sets.push('is_in_store = ?'); params.push(req.body.isInStore ? 1 : 0); }
         if (req.body.statusNote !== undefined) { sets.push('status_note = ?'); params.push(req.body.statusNote); }
-        if (req.body.expectedStatusTime) { sets.push('expected_status_time = ?'); params.push(req.body.expectedStatusTime); }
+        if (req.body.expectedStatusTime) { sets.push('expected_status_time = ?'); params.push(req.body.expectedStatusTime.replace('T', ' ').slice(0, 19)); }
         if (req.body.expectedInTime) { sets.push('expected_in_time = ?'); params.push(req.body.expectedInTime); }
         if (req.body.expectedOutTime) { sets.push('expected_out_time = ?'); params.push(req.body.expectedOutTime); }
         sets.push('updated_at = ?'); params.push(now()); params.push('WORK_STATUS_SINGLE_RECORD');

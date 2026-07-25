@@ -9,7 +9,7 @@
     <!-- 操作栏 -->
     <view class="action-bar">
       <view class="action-btn edit-btn" bindtap="onEdit">
-        <text>编辑</text>
+        <text>修改</text>
       </view>
       <view class="action-btn delete-btn" bindtap="onDelete">
         <text>删除</text>

@@ -78,7 +78,7 @@ Component({
     },
 
     onCardTap: function () {
-      this.triggerEvent("tap", { orderId: this.data.order._id });
+      this.triggerEvent("cardtap", { orderId: this.data.order._id });
     }
   }
 });

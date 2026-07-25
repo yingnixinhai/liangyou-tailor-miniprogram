@@ -11,9 +11,12 @@ Page({
 
   onLoad: function (options) {
     this.setData({ isAdmin: app.globalData.isAdmin, theme: app.globalData.theme, pageClass: app.globalData.theme === "night" ? "night-mode" : "" });
+    var loaded = false;
     if (options.id) {
       var that = this;
-      app.waitForReady(function() { that.loadOrder(options.id); });
+      app.waitForReady(function() {
+        if (!loaded) { loaded = true; that.loadOrder(options.id); }
+      });
     }
   },
 
@@ -84,14 +87,16 @@ Page({
     });
   },
 
-  onEdit: function () {
-    const order = this.data.order;
-    if (!order) return;
-    if (!this.data.isAdmin && order.status !== "unpaid") {
-      wx.showToast({ title: "仅可编辑未交付订单", icon: "none" }); return;
-    }
-    wx.navigateTo({ url: "/pages/orders/create/index?id=" + order._id });
-  },
+ onEdit: function () {
+   const order = this.data.order;
+   if (!order) return;
+   if (!this.data.isAdmin && order.status !== "unpaid") {
+     wx.showToast({ title: "仅可编辑未交付订单", icon: "none" }); return;
+   }
+   // 缓存订单数据到全局，编辑页直接使用，避免重复 API 调用
+   app.globalData.editOrder = order;
+   wx.navigateTo({ url: "/pages/orders/create/index?id=" + order._id });
+ },
 
   onDelete: function () {
     const that = this;

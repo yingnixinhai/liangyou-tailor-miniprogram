@@ -95,6 +95,9 @@
 }
 
 .submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 96rpx;
   line-height: 96rpx;
@@ -107,6 +110,4 @@
   border: none;
 }
 
-.btn-disabled {
-  opacity: 0.5;
-}
+.btn-disabled { opacity: 0.5; }

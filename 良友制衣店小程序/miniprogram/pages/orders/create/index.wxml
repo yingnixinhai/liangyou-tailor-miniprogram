@@ -1,15 +1,14 @@
 <view class="create-page {{pageClass}}">
 
+  <!-- 编辑模式：数据在 onLoad 中同步 setData 后渲染，此时输入组件首次渲染即带数据 -->
+
   <!-- 订单需求 -->
   <view class="form-section">
     <view class="form-label">订单需求</view>
-    <textarea
-      class="form-textarea"
+    <textarea class="form-textarea"
       value="{{orderRequirements}}"
-      placeholder="请描述您的需求..."
-      maxlength="500"
-      bindinput="onInputReq"
-    />
+      placeholder="请描述您的需求..." maxlength="500"
+      bindinput="onInputReq" />
   </view>
 
   <!-- 订单图片 -->
@@ -29,47 +28,37 @@
   <!-- 客户姓名 -->
   <view class="form-section">
     <view class="form-label">客户姓名</view>
-    <input
-      class="form-input"
+    <input class="form-input"
       value="{{customerName}}"
       placeholder="选填"
-      bindinput="onInputName"
-    />
+      bindinput="onInputName" />
   </view>
 
   <!-- 联系电话 -->
   <view class="form-section">
     <view class="form-label">联系电话</view>
-    <input
-      class="form-input"
+    <input class="form-input"
       value="{{customerPhone}}"
-      placeholder="选填"
-      type="text"
-      bindinput="onInputPhone"
-    />
+      placeholder="选填" type="text"
+      bindinput="onInputPhone" />
   </view>
 
   <!-- 商家专属字段 -->
   <view wx:if="{{isAdmin}}">
     <view class="form-section">
       <view class="form-label">预计完成时间</view>
-      <input
-        class="form-input"
-        value="{{expectedCompletionTime}}"
-        placeholder="格式: 2026-07-30 18:00"
-        bindinput="onInputTime"
-      />
+    <input class="form-input"
+      value="{{expectedCompletionTime}}"
+      placeholder="格式: 2026-07-30 18:00"
+      bindinput="onInputTime" />
     </view>
 
     <view class="form-section">
       <view class="form-label">订单金额（元）</view>
-      <input
-        class="form-input"
-        value="{{orderAmount}}"
-        placeholder="0.00"
-        type="digit"
-        bindinput="onInputAmount"
-      />
+    <input class="form-input"
+      value="{{orderAmount}}"
+      placeholder="0.00" type="digit"
+      bindinput="onInputAmount" />
     </view>
   </view>
 

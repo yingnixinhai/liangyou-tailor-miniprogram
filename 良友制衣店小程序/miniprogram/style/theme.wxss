@@ -22,7 +22,7 @@ page {
 }
 
 /* ===== 暗夜模式（不在店） ===== */
-page.night-mode {
+.night-mode {
   --bg-color: #1A1A1A;
   --text-color: #F0F0F0;
   --text-secondary: #AAAAAA;

@@ -3,7 +3,7 @@ const api = require("../../utils/api");
 
 Page({
   data: {
-    activeTab: "unpaid",
+    activeTab: "incomplete",
     orders: [],
     isAdmin: false,
     theme: "day",

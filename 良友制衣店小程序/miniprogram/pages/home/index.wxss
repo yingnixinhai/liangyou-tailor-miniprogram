@@ -118,6 +118,9 @@
 }
 
 .toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 96rpx;
   line-height: 96rpx;
@@ -135,21 +138,3 @@
   opacity: 0.8;
 }
 
-.btn-disabled {
-  opacity: 0.5;
-}
-
-/* ===== 鍒囨崲鍔ㄧ敾閬僵 ===== */
-.switch-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 100;
-}
-
-.switch-active {
-  /* 鍔ㄧ敾鐢?JS 閫氳繃 clip-path 鎺у埗 */
-}

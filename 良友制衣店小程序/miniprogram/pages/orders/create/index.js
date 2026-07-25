@@ -16,32 +16,49 @@ Page({
     theme: "day"
   },
 
-  onLoad: function (options) {
-    this.setData({ isAdmin: app.globalData.isAdmin, theme: app.globalData.theme });
-    this.setData({ pageClass: app.globalData.theme === "night" ? "night-mode" : "" });
-    if (options.id) {
-      wx.setNavigationBarTitle({ title: "编辑订单" });
-      this.setData({ isEdit: true, orderId: options.id });
-      var that = this;
-      app.waitForReady(function() { that.loadOrder(options.id); });
-    }
-  },
-
-  loadOrder: function (orderId) {
-    api.request("/order", { action: "getDetail", orderId }).then(res => {
-      if (res.success) {
-        const order = res.data;
-        this.setData({
-          orderRequirements: order.orderRequirements || "",
-          imageFileIDs: order.imageFileIDs || [],
-          customerName: order.customerName || "",
-          customerPhone: order.customerPhone || "",
-          expectedCompletionTime: order.expectedCompletionTime || "",
-          orderAmount: order.orderAmount !== undefined ? order.orderAmount.toString() : ""
-        });
-      }
+ onLoad: function (options) {
+   this.setData({ isAdmin: app.globalData.isAdmin, theme: app.globalData.theme });
+   this.setData({ pageClass: app.globalData.theme === "night" ? "night-mode" : "" });
+   if (options.id) {
+     wx.setNavigationBarTitle({ title: "编辑订单" });
+     this.setData({ isEdit: true, orderId: options.id });
+     // 优先使用详情页缓存的订单数据，避免再调 API
+     if (app.globalData.editOrder && app.globalData.editOrder._id === options.id) {
+       this.applyOrderData(app.globalData.editOrder);
+       return;
+     }
+     // 缓存不存在时回退到 API 调用
+     var that = this;
+     app.waitForReady(function() { that.loadOrder(options.id); });
+   }
+ },
+  applyOrderData: function (order) {
+    this.setData({
+      orderRequirements: order.orderRequirements || "",
+      imageFileIDs: order.imageFileIDs || [],
+      customerName: order.customerName || "",
+      customerPhone: order.customerPhone || "",
+      expectedCompletionTime: order.expectedCompletionTime || "",
+      orderAmount: order.orderAmount !== undefined ? order.orderAmount.toString() : "",
     });
   },
+ loadOrder: function (orderId) {
+   var that = this;
+   console.log("loadOrder called with orderId:", orderId);
+   api.request("/order", { action: "getDetail", orderId }).then(function (res) {
+     console.log("loadOrder response:", JSON.stringify(res));
+      if (res.success) {
+        var order = res.data;
+        that.applyOrderData(order);
+      } else {
+        wx.showToast({ title: res.errMsg || "加载订单失败", icon: "none" });
+      }
+   }).catch(function (err) {
+    console.error("加载订单失败", err);
+    wx.showToast({ title: "加载订单失败", icon: "none" });
+  });
+  },
+
 
   onInputReq: function (e) { this.setData({ orderRequirements: e.detail.value }); },
   onInputName: function (e) { this.setData({ customerName: e.detail.value }); },
@@ -51,6 +68,7 @@ Page({
 
   onChooseImage: function () {
     const that = this;
+    console.log("onChooseImage called");
     wx.chooseImage({
       count: 1,
       sizeType: ["compressed"],

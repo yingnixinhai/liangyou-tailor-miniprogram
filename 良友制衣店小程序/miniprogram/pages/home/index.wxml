@@ -15,10 +15,6 @@
     </view>
   </view>
 
-  <!-- 切换动画遮罩 -->
-  <view class="switch-overlay {{switchClass}}" wx:if="{{false}}">
-  </view>
-
   <!-- 状态信息区域 -->
   <view class="info-section">
     <view class="info-row" bindtap="onEditExpectedTime">
@@ -34,9 +30,8 @@
 
   <!-- 切换按钮（仅商家） -->
   <view class="toggle-btn-section safe-area-bottom" wx:if="{{isAdmin}}">
-    <button class="toggle-btn {{btnClass}}"
-            bindtap="onToggleStatus"
-            disabled="{{isAnimating}}">
+    <button class="toggle-btn"
+            bindtap="onToggleStatus">
       {{toggleLabel}}
     </button>
   </view>

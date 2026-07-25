@@ -5,11 +5,11 @@ Page({
   data: {
     isInStore: true, isAdmin: false,
     statusNote: "", expectedInTime: "09:00", expectedOutTime: "19:00",
-    expectedStatusTime: "", theme: "day", isAnimating: false,
+    expectedStatusTime: "", theme: "day",
     // Computed display values
     pageClass: "", buClass: "", heroShiftClass: "",
     expectedLabel: "", toggleLabel: "",
-    btnClass: "", switchClass: ""
+    btnClass: ""
   },
 
   onLoad: function () {
@@ -19,7 +19,10 @@ Page({
 
   onShow: function () {
     var that = this;
-    app.waitForReady(function() { that.loadStatus(); });
+    app.waitForReady(function() {
+      that.setData({ isAdmin: app.globalData.isAdmin });
+      that.loadStatus();
+    });
   },
 
   loadStatus: function () {
@@ -46,8 +49,7 @@ Page({
       heroShiftClass: theme === "night" ? "hero-shifted" : "",
       expectedLabel: isInStore ? "预计下班" : "预计上班",
       toggleLabel: isInStore ? "下班" : "上班",
-      btnClass: this.data.isAnimating ? "btn-disabled" : "",
-      switchClass: this.data.isAnimating ? "switch-active" : ""
+      btnClass: "",
     });
   },
 
@@ -60,11 +62,15 @@ Page({
   },
 
   onToggleStatus: function () {
-    if (!this.data.isAdmin || this.data.isAnimating) return;
+    console.log('toggle clicked, isAdmin=' + this.data.isAdmin);
+    if (!this.data.isAdmin) return;
     const that = this;
-    this.setData({ isAnimating: true });
-
     const newIsInStore = !this.data.isInStore;
+    // 立即切换模式（无动画）
+    var theme = newIsInStore ? "day" : "night";
+    that.setData({ isInStore: newIsInStore, theme: theme });
+    that.applyTheme(theme);
+    that.computeDisplayValues(theme, newIsInStore);
     const now = new Date();
     let expectedStatusTime;
     if (newIsInStore) {
@@ -75,24 +81,27 @@ Page({
       expectedStatusTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(h), parseInt(m), 0);
     }
 
+    // 构造预计切换时间字符串
+    var expTimeStr = expectedStatusTime.getFullYear() + '-' +
+      String(expectedStatusTime.getMonth()+1).padStart(2,'0') + '-' +
+      String(expectedStatusTime.getDate()).padStart(2,'0') + ' ' +
+      String(expectedStatusTime.getHours()).padStart(2,'0') + ':' +
+      String(expectedStatusTime.getMinutes()).padStart(2,'0') + ':' +
+      String(expectedStatusTime.getSeconds()).padStart(2,'0');
+
+    // 发送 API 请求（并行，不等待响应即切换模式）
     api.request("/status", {
       action: "update", isInStore: newIsInStore,
-      expectedStatusTime: expectedStatusTime.toISOString()
-    }).then(res => {
-      if (res.success) {
-        const theme = newIsInStore ? "day" : "night";
-        that.setData({ isInStore: newIsInStore, theme: theme });
-        that.applyTheme(theme);
-        that.computeDisplayValues(theme, newIsInStore);
+      expectedStatusTime: expTimeStr
+    }).then(function (res) {
+      if (!res.success) {
+        wx.showToast({ title: res.errMsg || '操作失败', icon: 'none' });
       }
-      setTimeout(() => {
-        that.setData({ isAnimating: false });
-        that.computeDisplayValues(that.data.theme, that.data.isInStore);
-      }, 600);
-    }).catch(err => {
-      console.error("切换状态失败", err);
-      that.setData({ isAnimating: false });
+    }).catch(function (err) {
+      console.error('切换状态失败', err);
+      wx.showToast({ title: '请求失败: ' + (err.errMsg || '网络错误'), icon: 'none' });
     });
+
   },
 
   onEditNote: function () {
