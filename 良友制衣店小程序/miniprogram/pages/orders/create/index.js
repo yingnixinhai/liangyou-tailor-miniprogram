@@ -51,7 +51,6 @@ Page({
 
   onChooseImage: function () {
     const that = this;
-    const api = require("../../utils/api");
     wx.chooseImage({
       count: 1,
       sizeType: ["compressed"],
