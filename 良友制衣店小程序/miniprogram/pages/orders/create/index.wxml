@@ -1,0 +1,87 @@
+<view class="create-page {{pageClass}}">
+
+  <!-- 订单需求 -->
+  <view class="form-section">
+    <view class="form-label">订单需求</view>
+    <textarea
+      class="form-textarea"
+      value="{{orderRequirements}}"
+      placeholder="请描述您的需求..."
+      maxlength="500"
+      bindinput="onInputReq"
+    />
+  </view>
+
+  <!-- 订单图片 -->
+  <view class="form-section">
+    <view class="form-label">订单图片（可选）</view>
+    <view class="image-grid">
+      <view class="image-item" wx:for="{{imageFileIDs}}" wx:key="*this">
+        <image class="preview-img" src="{{item}}" mode="aspectFill" />
+        <view class="image-remove" data-index="{{index}}" bindtap="onRemoveImage">&#215;</view>
+      </view>
+      <view class="image-add" bindtap="onChooseImage">
+        <text class="add-icon">+</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 客户姓名 -->
+  <view class="form-section">
+    <view class="form-label">客户姓名</view>
+    <input
+      class="form-input"
+      value="{{customerName}}"
+      placeholder="选填"
+      bindinput="onInputName"
+    />
+  </view>
+
+  <!-- 联系电话 -->
+  <view class="form-section">
+    <view class="form-label">联系电话</view>
+    <input
+      class="form-input"
+      value="{{customerPhone}}"
+      placeholder="选填"
+      type="text"
+      bindinput="onInputPhone"
+    />
+  </view>
+
+  <!-- 商家专属字段 -->
+  <view wx:if="{{isAdmin}}">
+    <view class="form-section">
+      <view class="form-label">预计完成时间</view>
+      <input
+        class="form-input"
+        value="{{expectedCompletionTime}}"
+        placeholder="格式: 2026-07-30 18:00"
+        bindinput="onInputTime"
+      />
+    </view>
+
+    <view class="form-section">
+      <view class="form-label">订单金额（元）</view>
+      <input
+        class="form-input"
+        value="{{orderAmount}}"
+        placeholder="0.00"
+        type="digit"
+        bindinput="onInputAmount"
+      />
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section safe-area-bottom">
+    <button
+      class="submit-btn {{submitting ? 'btn-disabled' : ''}}"
+      bindtap="onSubmit"
+      disabled="{{submitting}}"
+    >
+      {{submitting ? '提交中...' : (isEdit ? '保存修改' : '创建订单')}}
+    </button>
+  </view>
+
+</view>

@@ -1,0 +1,42 @@
+
+<view class="orders-page {{pageClass}}">
+
+  <status-tabs
+    activeTab="{{activeTab}}"
+    theme="{{theme}}"
+    bind:change="onTabChange"
+  />
+
+  <!-- 订单列表 -->
+  <scroll-view
+    class="order-list"
+    scroll-y
+    bindscrolltolower="onReachBottom"
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <view wx:if="{{orders.length === 0 && !loading}}" class="empty-state">
+      <text class="empty-text">暂无订单</text>
+    </view>
+
+    <block wx:for="{{orders}}" wx:key="_id">
+      <order-card
+        order="{{item}}"
+        theme="{{theme}}"
+        bind:tap="onOrderTap"
+      />
+    </block>
+
+    <view wx:if="{{loading}}" class="loading-state">
+      <text class="loading-text">加载中...</text>
+    </view>
+  </scroll-view>
+
+  <!-- 新建按钮 -->
+  <view class="fab-wrap">
+    <view class="fab-btn" bindtap="onCreateOrder">
+      <text class="fab-icon">+</text>
+    </view>
+  </view>
+
+</view>

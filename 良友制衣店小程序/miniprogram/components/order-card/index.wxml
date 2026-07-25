@@ -1,0 +1,29 @@
+<view class="order-card {{pageClass}}" bindtap="onCardTap">
+  <!-- 左侧图片 -->
+  <view class="card-image-wrap">
+    <image
+      class="card-image"
+      src="{{imageSrc}}"
+      mode="aspectFill"
+    />
+  </view>
+
+  <!-- 右侧内容 -->
+  <view class="card-content">
+    <view class="card-header">
+      <text class="card-user">{{customerName}}</text>
+    </view>
+    <view class="card-desc">
+      <text class="card-desc-text">{{requirementText}}</text>
+    </view>
+    <view class="card-footer">
+      <text class="card-time-label">{{timeLabel}}:</text>
+      <text class="card-time">{{displayTime}}</text>
+    </view>
+  </view>
+
+  <!-- 状态徽标 -->
+  <view class="card-badge {{statusClass}}">
+    <text>{{statusText}}</text>
+  </view>
+</view>

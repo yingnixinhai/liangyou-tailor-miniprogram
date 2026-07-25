@@ -1,0 +1,10 @@
+
+{
+  "name": "liangyou-tailor-serverless",
+  "version": "1.0.0",
+  "description": "良友制衣店后端 - 腾讯云SCF",
+  "main": "index.js",
+  "dependencies": {
+    "mysql2": "^3.6.0"
+  }
+}

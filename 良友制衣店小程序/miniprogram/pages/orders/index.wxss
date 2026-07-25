@@ -1,0 +1,63 @@
+
+.orders-page { display: flex; flex-direction: column;
+  height: 100vh; overflow: hidden; box-sizing: border-box;
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease;
+  padding-bottom: 120rpx;
+}
+
+.order-list {
+  flex: 1; height: 0;
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: var(--text-secondary);
+}
+
+.loading-state {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.fab-wrap {
+  position: fixed;
+  right: 40rpx;
+  bottom: 140rpx;
+  z-index: 50;
+}
+
+.fab-btn {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.fab-btn:active {
+  transform: scale(0.92);
+}
+
+.fab-icon {
+  font-size: 48rpx;
+  font-weight: 300;
+  line-height: 1;
+}

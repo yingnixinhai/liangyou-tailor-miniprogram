@@ -1,0 +1,147 @@
+
+.detail-page {
+  height: 100vh; overflow-y: auto; box-sizing: border-box;
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease;
+}
+
+.loading-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 300rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+.detail-content {
+  padding-bottom: 60rpx;
+}
+
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16rpx 30rpx;
+  gap: 20rpx;
+}
+
+.action-btn {
+  padding: 8rpx 24rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: var(--text-color);
+  background-color: var(--card-bg);
+}
+
+.action-btn:active {
+  opacity: 0.7;
+}
+
+.delete-btn {
+  color: #E53935;
+}
+
+.image-section {
+  display: flex;
+  gap: 12rpx;
+  padding: 0 30rpx 20rpx;
+  overflow-x: auto;
+}
+
+.detail-image {
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+
+.info-list {
+  padding: 0 30rpx;
+}
+
+.info-item {
+  display: flex;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.info-item-full {
+  flex-direction: column;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: var(--text-color);
+  flex: 1;
+}
+
+.info-value-text {
+  font-size: 28rpx;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-top: 12rpx;
+  word-break: break-all;
+}
+
+.status-badge {
+  font-weight: 600;
+}
+
+.status-badge.unpaid {
+  color: #E65100;
+}
+
+.status-badge.incomplete {
+  color: #1565C0;
+}
+
+.status-badge.completed {
+  color: #2E7D32;
+}
+
+.action-section {
+  padding: 40rpx 30rpx 60rpx;
+}
+
+.action-btn-main {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 12rpx;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  margin-bottom: 20rpx;
+}
+
+.action-btn-main:active {
+  opacity: 0.8;
+}
+
+/* 暗夜模式状态颜色 */
+.night-mode .status-badge.unpaid {
+  color: #FFB74D;
+}
+
+.night-mode .status-badge.incomplete {
+  color: #90CAF9;
+}
+
+.night-mode .status-badge.completed {
+  color: #81C784;
+}
