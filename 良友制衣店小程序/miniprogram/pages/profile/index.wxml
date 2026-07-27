@@ -44,20 +44,24 @@
   <!-- 商家设置区 -->
   <view class="settings-section" wx:if="{{isAdmin}}">
     <view class="section-title">默认时间设置</view>
-    <view class="setting-item" bindtap="onEditInTime">
-      <text class="setting-label">默认上班时间</text>
-      <view class="setting-right">
-        <text class="setting-value">{{expectedInTime}}</text>
-        <text class="setting-arrow"> ></text>
+    <picker mode="time" value="{{expectedInTime}}" bindchange="onInTimeChange">
+      <view class="setting-item">
+        <text class="setting-label">默认上班时间</text>
+        <view class="setting-right">
+          <text class="setting-value">{{expectedInTime}}</text>
+          <text class="setting-arrow"> ></text>
+        </view>
       </view>
-    </view>
-    <view class="setting-item" bindtap="onEditOutTime">
-      <text class="setting-label">默认下班时间</text>
-      <view class="setting-right">
-        <text class="setting-value">{{expectedOutTime}}</text>
-        <text class="setting-arrow"> ></text>
+    </picker>
+    <picker mode="time" value="{{expectedOutTime}}" bindchange="onOutTimeChange">
+      <view class="setting-item">
+        <text class="setting-label">默认下班时间</text>
+        <view class="setting-right">
+          <text class="setting-value">{{expectedOutTime}}</text>
+          <text class="setting-arrow"> ></text>
+        </view>
       </view>
-    </view>
+    </picker>
   </view>
 
   <!-- 关于 -->

@@ -17,10 +17,12 @@
 
   <!-- 状态信息区域 -->
   <view class="info-section">
-    <view class="info-row" bindtap="onEditExpectedTime">
-      <text class="info-label">{{expectedLabel}}</text>
-      <text class="info-value">{{isInStore ? expectedOutTime : expectedInTime}}</text>
-    </view>
+    <picker mode="time" value="{{isInStore ? expectedOutTime : expectedInTime}}" bindchange="onExpectedTimeChange">
+      <view class="info-row">
+        <text class="info-label">{{expectedLabel}}</text>
+        <text class="info-value">{{isInStore ? expectedOutTime : expectedInTime}}</text>
+      </view>
+    </picker>
     <view class="info-row info-row-note" wx:if="{{isAdmin || statusNote}}" bindtap="onEditNote">
       <text class="info-label">备注</text>
       <text class="info-value info-value-note" wx:if="{{statusNote}}">{{statusNote}}</text>

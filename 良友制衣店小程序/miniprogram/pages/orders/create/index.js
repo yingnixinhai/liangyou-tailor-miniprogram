@@ -11,6 +11,8 @@ Page({
     customerName: "",
     customerPhone: "",
     expectedCompletionTime: "",
+    expectedDate: "",
+    expectedTime: "",
     orderAmount: "",
     submitting: false,
     theme: "day"
@@ -32,16 +34,34 @@ Page({
      app.waitForReady(function() { that.loadOrder(options.id); });
    }
  },
-  applyOrderData: function (order) {
-    this.setData({
-      orderRequirements: order.orderRequirements || "",
-      imageFileIDs: order.imageFileIDs || [],
-      customerName: order.customerName || "",
-      customerPhone: order.customerPhone || "",
-      expectedCompletionTime: order.expectedCompletionTime || "",
-      orderAmount: order.orderAmount != null ? order.orderAmount.toString() : "",
-    });
-  },
+ applyOrderData: function (order) {
+   var dt = order.expectedCompletionTime || "";
+   var d = "", t = "";
+   if (dt) {
+      var sdt = String(dt);
+      if (sdt.indexOf("T") > -1) {
+        // ISO 8601 格式: "2026-07-30T18:00:00.000Z"
+        var ds = sdt.split("T");
+        d = ds[0] || "";
+        t = (ds[1] || "").slice(0, 5);
+      } else {
+        // MySQL 格式: "2026-07-30 18:00:00"
+        var parts = sdt.split(" ");
+        d = parts[0] || "";
+        t = (parts[1] || "").slice(0, 5);
+      }
+   }
+   this.setData({
+     orderRequirements: order.orderRequirements || "",
+     imageFileIDs: order.imageFileIDs || [],
+     customerName: order.customerName || "",
+     customerPhone: order.customerPhone || "",
+     expectedDate: d,
+     expectedTime: t,
+     expectedCompletionTime: dt,
+     orderAmount: order.orderAmount != null ? order.orderAmount.toString() : "",
+   });
+ },
  loadOrder: function (orderId) {
    var that = this;
    console.log("loadOrder called with orderId:", orderId);
@@ -64,7 +84,9 @@ Page({
   onInputName: function (e) { this.setData({ customerName: e.detail.value }); },
   onInputPhone: function (e) { this.setData({ customerPhone: e.detail.value }); },
   onInputTime: function (e) { this.setData({ expectedCompletionTime: e.detail.value }); },
-  onInputAmount: function (e) { this.setData({ orderAmount: e.detail.value }); },
+ onInputAmount: function (e) { this.setData({ orderAmount: e.detail.value }); },
+  onDateChange: function (e) { this.setData({ expectedDate: e.detail.value }); },
+  onTimeChange: function (e) { this.setData({ expectedTime: e.detail.value }); },
 
   onChooseImage: function () {
     const that = this;
@@ -132,7 +154,8 @@ Page({
       customerPhone: customerPhone.trim() || undefined
     };
     if (this.data.isAdmin) {
-      if (this.data.expectedCompletionTime) data.expectedCompletionTime = this.data.expectedCompletionTime;
+      var dtVal = this.data.expectedDate && this.data.expectedTime ? this.data.expectedDate + ' ' + this.data.expectedTime : '';
+      if (dtVal) data.expectedCompletionTime = dtVal;
       if (this.data.orderAmount) data.orderAmount = Number(this.data.orderAmount);
     }
 

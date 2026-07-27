@@ -47,41 +47,21 @@ Page({
     });
   },
 
-  onEditInTime: function () {
+  onInTimeChange: function (e) {
     if (!this.data.isAdmin) return;
-    const that = this;
-    wx.showModal({
-      title: "修改默认上班时间", content: "", editable: true,
-      placeholderText: "当前: " + this.data.expectedInTime + "  格式: HH:MM",
-      success: function (res) {
-        if (res.confirm && res.content) {
-          const time = res.content.trim();
-          if (!/^\d{2}:\d{2}$/.test(time)) { wx.showToast({ title: "格式错误", icon: "none" }); return; }
-          api.request("/status", { action: "update", expectedInTime: time }).then(() => {
-            that.setData({ expectedInTime: time });
-            wx.showToast({ title: "已更新" });
-          });
-        }
-      }
+    var t = e.detail.value;
+    api.request("/status", { action: "update", expectedInTime: t }).then(() => {
+      this.setData({ expectedInTime: t });
+      wx.showToast({ title: "已更新" });
     });
   },
 
-  onEditOutTime: function () {
+  onOutTimeChange: function (e) {
     if (!this.data.isAdmin) return;
-    const that = this;
-    wx.showModal({
-      title: "修改默认下班时间", content: "", editable: true,
-      placeholderText: "当前: " + this.data.expectedOutTime + "  格式: HH:MM",
-      success: function (res) {
-        if (res.confirm && res.content) {
-          const time = res.content.trim();
-          if (!/^\d{2}:\d{2}$/.test(time)) { wx.showToast({ title: "格式错误", icon: "none" }); return; }
-          api.request("/status", { action: "update", expectedOutTime: time }).then(() => {
-            that.setData({ expectedOutTime: time });
-            wx.showToast({ title: "已更新" });
-          });
-        }
-      }
+    var t = e.detail.value;
+    api.request("/status", { action: "update", expectedOutTime: t }).then(() => {
+      this.setData({ expectedOutTime: t });
+      wx.showToast({ title: "已更新" });
     });
   },
 

@@ -111,3 +111,9 @@
 }
 
 .btn-disabled { opacity: 0.5; }
+
+.picker-value { display: flex; align-items: center; color: var(--text-color); }
+.picker-value:empty { color: var(--text-secondary); }
+
+.time-picker-row { display: flex; gap: 16rpx; }
+.time-picker-row picker { flex: 1; }

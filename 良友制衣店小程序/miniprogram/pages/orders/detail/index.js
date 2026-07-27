@@ -20,6 +20,13 @@ Page({
     }
   },
 
+  onShow: function () {
+    var that = this;
+    if (this.data.order && this.data.order._id) {
+      that.loadOrder(this.data.order._id);
+    }
+  },
+
   loadOrder: function (orderId) {
     const that = this;
     this.setData({ loading: true });

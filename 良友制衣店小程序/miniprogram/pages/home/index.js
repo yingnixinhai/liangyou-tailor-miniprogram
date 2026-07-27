@@ -120,23 +120,12 @@ Page({
     });
   },
 
-  onEditExpectedTime: function () {
+  onExpectedTimeChange: function (e) {
     if (!this.data.isAdmin) return;
-    const that = this;
-    const current = this.data.isInStore ? this.data.expectedOutTime : this.data.expectedInTime;
-    wx.showModal({
-      title: "编辑预计时间", content: "", editable: true,
-      placeholderText: "当前: " + current + " 输入 HH:MM",
-      success: function (r) {
-        if (r.confirm && r.content) {
-          const t = r.content.trim();
-          if (!/^\d{2}:\d{2}$/.test(t)) { wx.showToast({ title: "格式错误", icon: "none" }); return; }
-          const field = that.data.isInStore ? "expectedOutTime" : "expectedInTime";
-          api.request("/status", { action: "update", [field]: t }).then(() => {
-            that.setData({ [field]: t });
-          });
-        }
-      }
+    var t = e.detail.value;
+    var field = this.data.isInStore ? "expectedOutTime" : "expectedInTime";
+    api.request("/status", { action: "update", [field]: t }).then(() => {
+      this.setData({ [field]: t });
     });
   }
 });

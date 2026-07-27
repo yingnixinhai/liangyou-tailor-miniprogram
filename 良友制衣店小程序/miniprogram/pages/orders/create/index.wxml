@@ -47,10 +47,14 @@
   <view wx:if="{{isAdmin}}">
     <view class="form-section">
       <view class="form-label">预计完成时间</view>
-    <input class="form-input"
-      value="{{expectedCompletionTime}}"
-      placeholder="格式: 2026-07-30 18:00"
-      bindinput="onInputTime" />
+       <view class="time-picker-row">
+       <picker mode="date" value="{{expectedDate}}" bindchange="onDateChange">
+        <view class="form-input picker-value">{{expectedDate || "选择日期"}}</view>
+      </picker>
+      <picker mode="time" value="{{expectedTime}}" bindchange="onTimeChange">
+        <view class="form-input picker-value">{{expectedTime || "选择时间"}}</view>
+      </picker>
+   </view>
     </view>
 
     <view class="form-section">

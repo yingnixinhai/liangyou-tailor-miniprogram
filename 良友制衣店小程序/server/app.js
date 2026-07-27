@@ -196,11 +196,12 @@ async function listOrders(body, openid, admin) {
     where += (where ? ' AND' : 'WHERE') + ' customer_openid = ?';
     params.push(openid);
   }
-  const sortField = status === 'completed' ? 'completion_time' : status === 'incomplete' ? 'expected_completion_time' : 'created_at';
-  const conn = await (await getPool()).getConnection();
+ const sortField = status === 'completed' ? 'completion_time' : status === 'incomplete' ? 'expected_completion_time' : 'created_at';
+  const sortOrder = status === 'incomplete' ? 'ASC' : 'DESC';
+ const conn = await (await getPool()).getConnection();
   try {
     const [countRes] = await conn.query(`SELECT COUNT(*) as total FROM orders ${where}`, params);
-    const [rows] = await conn.query(`SELECT * FROM orders ${where} ORDER BY ${sortField} DESC LIMIT ? OFFSET ?`, [...params, pageSize, offset]);
+   const [rows] = await conn.query(`SELECT * FROM orders ${where} ORDER BY ${sortField} ${sortOrder} LIMIT ? OFFSET ?`, [...params, pageSize, offset]);
     return { success: true, data: rows.map(formatOrder), total: countRes[0].total, page, pageSize };
   } finally { conn.release(); }
 }
@@ -403,13 +404,25 @@ app.post('/init', async (req, res) => {
 });
 
 // ===== 字段映射 =====
+function toLocalStr(d) {
+  if (!d) return null;
+  if (typeof d === "string") return d;
+  var y = d.getFullYear();
+  var m = String(d.getMonth() + 1).padStart(2, "0");
+  var day = String(d.getDate()).padStart(2, "0");
+  var h = String(d.getHours()).padStart(2, "0");
+  var min = String(d.getMinutes()).padStart(2, "0");
+  var s = String(d.getSeconds()).padStart(2, "0");
+  return y + "-" + m + "-" + day + " " + h + ":" + min + ":" + s;
+}
+
 function formatOrder(row) {
   return {
     _id: row.id, orderRequirements: row.order_requirements,
-    createdAt: row.created_at, expectedCompletionTime: row.expected_completion_time,
+    createdAt: toLocalStr(row.created_at), expectedCompletionTime: toLocalStr(row.expected_completion_time),
     imageFileIDs: row.image_fileids ? JSON.parse(row.image_fileids) : [],
     orderAmount: row.order_amount, status: row.status,
-    completionTime: row.completion_time, customerName: row.customer_name,
+    completionTime: toLocalStr(row.completion_time), customerName: row.customer_name,
     customerPhone: row.customer_phone, customerOpenId: row.customer_openid,
     createdBy: row.created_by, lastUpdatedAt: row.last_updated_at
   };
